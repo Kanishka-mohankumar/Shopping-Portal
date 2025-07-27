@@ -183,6 +183,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Modern UI/UX patterns
 - Accessibility considerations
 
----
 
-**Made with ❤️ using vanilla web technologies**
