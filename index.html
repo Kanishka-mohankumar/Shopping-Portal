@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Shopping Portal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <button class="wishlist-toggle" onclick="openWishlistModal()">Wishlist</button>
+    <button class="profile-btn" onclick="openModal()">Profile</button>
+    <button class="cart-btn" onclick="openCartModal()">Cart</button>
+    <button class="theme-toggle-btn" onclick="toggleTheme()">Theme</button>
+    <button class="currency-toggle-btn" onclick="toggleCurrency()">USD</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <div id="customerModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()" tabindex="0" onkeydown="handleModalKey(event)">×</span>
+      <h3>Customer Dashboard</h3>
+      <div class="customer-tabs">
+        <button class="tab-btn active" onclick="openTab('profile')">Profile</button>
+        <button class="tab-btn" onclick="openTab('history')">Purchase History</button>
+        <button class="tab-btn" onclick="openTab('points')">Loyalty Points</button>
+        <button class="tab-btn" onclick="openTab('address')">Address</button>
+        <button class="tab-btn" onclick="openTab('preferences')">Preferences</button>
+      </div>
+      <div id="profile" class="tab-content profile-section active">
+        <label>Name:</label>
+        <input type="text" id="customerName" value="Kanishk">
+        <label>Email:</label>
+        <input type="email" id="customerEmail" value="kanishk@gmail.com">
+        <label>Phone:</label>
+        <input type="tel" id="customerPhone" value="+919843407259">
+        <button class="save-btn" onclick="saveProfile()">Save Profile</button>
+      </div>
+      <div id="history" class="tab-content history-section">
+        <h4>Purchase History</h4>
+        <ul id="purchaseHistory"></ul>
+      </div>
+      <div id="points" class="tab-content points-section">
+        <h4>Loyalty Points History</h4>
+        <p>Current Points: <span id="currentPoints">4200</span></p>
+        <ul id="pointsHistory"></ul>
+      </div>
+      <div id="address" class="tab-content address-section">
+        <label>Delivery Address:</label>
+        <textarea id="customerAddress" rows="4" placeholder="Enter your delivery address"></textarea>
+        <button class="save-btn" onclick="saveAddress()">Save Address</button>
+      </div>
+      <div id="preferences" class="tab-content preferences-section">
+        <label>Preferred Currency:</label>
+        <select id="preferredCurrency">
+          <option value="USD">USD</option>
+          <option value="INR">INR</option>
+        </select>
+        <button class="save-btn" onclick="savePreferences()">Save Preferences</button>
+      </div>
+    </div>
+  </div>
+  <div id="wishlistModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeWishlistModal()" tabindex="0" onkeydown="handleModalKey(event)">×</span>
+      <h3>Wishlist</h3>
+      <div id="wishlistContent"></div>
+    </div>
+  </div>
+  <div id="cartModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button" onclick="closeCartModal()" tabindex="0" onkeydown="handleModalKey(event)">×</span>
+      <h3>Cart Summary</h3>
+      <div id="cartContent"></div>
+    </div>
+  </div>
+  <div id="billingModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeBillingModal()" tabindex="0" onkeydown="handleModalKey(event)">×</span>
+      <h3>Billing Details</h3>
+      <div class="billing-section">
+        <div>
+          <label>Order Summary</label>
+          <div id="billingSummary"></div>
+        </div>
+        <div>
+          <label>Payment Method</label>
+          <select id="paymentMethod">
+            <option value="cod">Cash on Delivery</option>
+            <option value="upi">UPI</option>
+            <option value="card">Credit/Debit Card</option>
+          </select>
+        </div>
+        <div>
+          <label>Use Loyalty Points</label>
+          <input type="number" id="loyaltyPointsInput" min="0" max="5000" placeholder="Enter points to redeem">
+          <div class="discount-info" id="discountInfo">Enter points to see discount</div>
+        </div>
+        <button class="confirm-btn" onclick="confirmPayment()">Confirm Payment</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <div class="purchase-section">
+      <img src="https://www.designbolts.com/wp-content/uploads/2019/02/Cute-Animated-Logo-Design-Inspiration-2019-24.gif" alt="Gift Logo" class="logo">
+      <div class="stats">
+        <div><strong>STORE</strong><br>0.00</div>
+        <div><strong>REWARD</strong><br>4200</div>
+        <div><strong>VOICE</strong><br>19</div>
+      </div>
+      <div class="buttons">
+        <button onclick="redeemReward()">REDEEM</button>
+        <button>PURCHASES</button>
+      </div>
+      <table id="purchaseTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div id="receipt" class="receipt"></div>
+    </div>
+    <div class="summary">
+      <div id="totalPrice">Total: $0.00</div>
+      <div id="tax">Tax (10%): $0.00</div>
+      <div id="net">Net: $0.00</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search items..." onkeyup="filterItems()">
+      <select id="categoryFilter" onchange="filterItems()">
+        <option value="all">All Categories</option>
+        <option value="clothing">Clothing</option>
+        <option value="accessories">Accessories</option>
+        <option value="electronics">Electronics</option>
+        <option value="others">Others</option>
+      </select>
+    </div>
+    <div class="item-grid" id="itemContainer"></div>
+    <div class="action-buttons">
+      <button class="customer-btn" onclick="openModal()">CUSTOMER</button>
+      <button class="new-btn" onclick="startNewOrder()">NEW</button>
+      <button class="sale-btn">SALE</button>
+      <button class="pay-btn" onclick="openBillingModal()">PAY</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
