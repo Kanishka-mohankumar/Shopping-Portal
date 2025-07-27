@@ -183,4 +183,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Modern UI/UX patterns
 - Accessibility considerations
 
+## 👨‍💻 Author
+
+Created and maintained by [@kanishka-mohankumar](https://github.com/kanishka-mohankumar)
+
 
